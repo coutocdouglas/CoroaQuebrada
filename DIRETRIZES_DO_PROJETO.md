@@ -139,7 +139,7 @@ Avaliar IA local via Ollama conforme o hardware disponível. Ainda não foi esco
 
 Integração com serviço pago é alternativa futura, com controle de gastos. Não depender de planos gratuitos online permanentes. Manter a lógica central testável sem uma conexão de IA ativa.
 
-Versionar o desenvolvimento no GitHub. Distribuir executáveis em Releases quando houver versão estável. Nenhum repositório foi criado ou conectado nesta etapa.
+Versionar o desenvolvimento no GitHub. Repositório fornecido pelo usuário: https://github.com/coutocdouglas/CoroaQuebrada.git. O usuário autorizou o envio das versões ao longo do desenvolvimento. A pasta local está vinculada a esse endereço; o primeiro envio depende de autenticação. Distribuir executáveis em Releases, mantendo ferramentas e builds fora do código-fonte versionado.
 
 Atualização dentro do jogo é objetivo posterior: verificar versão, baixar pacote, validar o conteúdo e aplicar com um atualizador, preservando os saves. Pode exigir reiniciar o jogo, mas deve evitar reinstalação manual a cada versão. Prever versionamento e migração dos arquivos de partida.
 
@@ -182,4 +182,10 @@ Referências sobre modelos consultadas na conversa:
 
 ## 13. Situação ao encerrar este registro
 
-Conceito e direção do protótipo discutidos. Nenhum jogo, integração de IA, mapa, repositório ou atualizador foi implementado nesta etapa. O próximo trabalho é detalhar as regras mínimas e preparar o protótipo conforme a sequência acima.
+Primeira base jogável 0.1.0 implementada em Godot 4.7.2: Conselho Real, três regiões, seis nobres apresentados, doze meses, duas ordens por mês, cinco ações, economia regional, crise de fronteira, consequências adiadas com origem, crônica e salvamento local. Regras provisórias detalhadas em `docs/REGRAS_V0_1.md`.
+
+Testes locais cobrem economia, transferências, limites, reconciliação, lembrança da ajuda no mês 10, salvamento e campanhas completas. A interface foi renderizada e inspecionada; há um executável Windows para teste local.
+
+Ainda não implementados: IA e texto livre, atuação autônoma dos vassalos, mapa isométrico, campanhas militares completas e atualizador. Próximo passo: experimentar a primeira partida, ajustar as regras e ampliar as negociações antes da integração de IA.
+
+O histórico inicial foi registrado em Git localmente. A publicação remota será confirmada apenas após autenticação e envio bem-sucedido ao GitHub.

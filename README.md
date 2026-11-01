@@ -40,7 +40,7 @@ Com a Godot disponível no terminal:
 ```text
 godot --headless --path . --editor --quit
 godot --headless --path . --script tests/test_kingdom.gd
-godot --headless --path . --quit-after 5
+godot --headless --path . --script tests/test_ui.gd
 ```
 
 O workflow do GitHub repete os testes a cada envio. Os testes verificam transferências e entregas, limites de ordens, consequências que dependem das relações atuais, memória no mês 10, salvamento e campanhas completas.

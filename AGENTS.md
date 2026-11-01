@@ -8,3 +8,5 @@
 - Diferencie o modelo usado para desenvolver o projeto do modelo integrado ao jogo.
 - A IA interpreta e narra; regras validadas controlam o estado, os recursos e as consequências. Preserve a coerência do histórico.
 - As regiões têm produção diversificada e desigual, podem não produzir certos recursos e podem obtê-los por comércio. Recursos regionais não pertencem automaticamente à Coroa.
+- O usuário autorizou publicar as versões no repositório https://github.com/coutocdouglas/CoroaQuebrada.git. Faça commits e envie versões verificadas quando houver autenticação disponível. Não peça novamente a autorização de publicação rotineira; se faltar login, explique a necessidade de conexão. Não confunda commit local com envio ao GitHub.
+- Execute os testes da simulação e da interface antes de publicar. Mantenha saves, credenciais, ferramentas baixadas e builds fora do histórico Git; executáveis devem ir em Releases.
