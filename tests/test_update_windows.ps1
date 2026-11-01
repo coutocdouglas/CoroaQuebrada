@@ -63,3 +63,5 @@ Assert-True (-not (Test-Path -LiteralPath (Join-Path $testRoot 'outside.txt'))) 
 Assert-True ((Get-Item -LiteralPath (Join-Path $dir 'CoroaQuebrada.exe')).Length -eq 102) 'Pacote inesperado preserva versão anterior'
 Write-Output "WINDOWS: $checks verificações, 0 falhas"
 Write-Output "Evidências: $testRoot"
+# Expected failure cases leave a native process exit code of 1. The suite itself passed.
+exit 0
