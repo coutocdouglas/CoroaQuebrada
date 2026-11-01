@@ -1,0 +1,11 @@
+.godot/
+work/
+builds/
+outputs/
+*.tmp
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+export_credentials.cfg
