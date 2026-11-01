@@ -45,6 +45,10 @@ func run_checks() -> void:
 	check(ui.game.state.orders_left == 1 and ui.petition_button.disabled, "Aceitar pedido usa ordem e fecha proposta")
 	await process_frame
 	check(ui.next_button.get_global_rect().end.y <= ui.size.y, "Rodapé continua visível após resposta diplomática")
+	ui.update_button.pressed.emit()
+	check(ui.update_dialog.visible and "atualizações" in ui.update_dialog.title.to_lower(), "Botão de atualização abre painel próprio")
+	ui.update_dialog.hide()
+	check(ui.game.state.orders_left == 1, "Consultar atualizações não consome ordem de jogo")
 	ui.queue_free()
 	await process_frame
 	print("INTERFACE: %d verificações, %d falhas" % [checks, failures])

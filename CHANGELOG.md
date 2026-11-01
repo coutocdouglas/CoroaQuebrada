@@ -1,5 +1,15 @@
 # Histórico de versões
 
+## 0.3.0 — 2026-11-01
+
+- Instalador Windows por usuário com atalhos e desinstalador, sem exigir administrador.
+- Painel de atualizações no jogo e consulta das versões públicas do GitHub.
+- Download mediante confirmação, verificação de tamanho e SHA-256, salvamento e reinício para aplicar.
+- Atualizador separado espera o jogo fechar, troca arquivos com backup e tenta restaurar a versão anterior se houver falha.
+- Partidas preservadas em AppData; o jogo retoma o save após atualizar.
+- Rotinas reproduzíveis de build e publicação, com instalador e ZIP de atualização na mesma release.
+- 208 verificações automatizadas, incluindo falhas de rede, hash inválido, arquivo bloqueado, restauração e caminhos externos.
+
 ## 0.2.0 — 2026-11-01
 
 - Pedidos diplomáticos com prazo, aceite, recusa e adiamento sem gasto de ordem.

@@ -1,0 +1,34 @@
+COROA QUEBRADA — Instalador e atualizações dentro do jogo
+
+Execute CoroaQuebrada-Setup-0.3.0.exe uma vez para instalar o programa.
+Abra pelo menu Iniciar ou pelo atalho escolhido na instalação.
+
+ATUALIZAR
+1. Abra Atualizações, no canto superior direito do jogo.
+2. Verifique e baixe a nova versão quando houver uma disponível.
+3. Clique em Salvar e reiniciar. Sua partida será salva antes de fechar.
+4. O atualizador troca os arquivos e reabre o jogo com a partida carregada.
+
+O jogo consulta versões ao abrir, mas só baixa e reinicia com sua confirmação.
+A consulta inclui versões de teste publicadas pelo autor. Sem internet,
+você pode continuar jogando normalmente. Não é necessário login no GitHub.
+
+JOGAR
+Escolha uma região, leia a proposta e confirme até duas ordens por mês.
+Pedidos abertos permitem aceitar, recusar ou decidir depois. As regiões
+têm seus próprios estoques e os acordos podem gerar consequências futuras.
+Encerre o mês para resolver produção, consumo, entregas e reações.
+Salve antes de fechar o programa. Há um único espaço de salvamento manual.
+
+PARTIDAS
+Partidas antigas podem ser carregadas. Os saves ficam separados do programa:
+%APPDATA%\Godot\app_userdata\Coroa Quebrada\reinado.json
+Atualizar e desinstalar o programa não apagam essa pasta.
+
+Se uma atualização falhar, o atualizador tenta restaurar os arquivos antigos.
+O diagnóstico fica em atualizacao.log na pasta do programa. Se algum arquivo
+estiver bloqueado, feche outras janelas do jogo antes de tentar novamente.
+
+Ainda sem IA generativa, texto livre, mapa isométrico e guerras completas.
+Desenvolvimento: https://github.com/coutocdouglas/CoroaQuebrada
+Licenças: THIRD_PARTY_NOTICES.md no diretório do programa.

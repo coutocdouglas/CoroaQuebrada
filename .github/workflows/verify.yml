@@ -26,3 +26,12 @@ jobs:
         run: /tmp/godot/Godot_v4.7.2-stable_linux.x86_64 --headless --path . --script tests/test_ui.gd
       - name: Testar diplomacia, autonomia e compatibilidade
         run: /tmp/godot/Godot_v4.7.2-stable_linux.x86_64 --headless --path . --script tests/test_politics.gd
+      - name: Testar seleção e integridade de atualizações
+        run: /tmp/godot/Godot_v4.7.2-stable_linux.x86_64 --headless --path . --script tests/test_updater.gd
+  windows-updater:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Testar aplicação, reversão e proteção de arquivos
+        shell: powershell
+        run: ./tests/test_update_windows.ps1

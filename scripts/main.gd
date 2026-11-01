@@ -18,6 +18,11 @@ var petition_button: Button
 var petition_dialog: ConfirmationDialog
 var petition_region = ""
 var refuse_button: Button
+const Updater = preload("res://scripts/updater.gd")
+var updater
+var update_button: Button
+var update_dialog: ConfirmationDialog
+var update_status: Label
 
 func _ready() -> void:
 	var theme_data = Theme.new()
@@ -42,9 +47,14 @@ func _ready() -> void:
 	heading.text = "COROA QUEBRADA  /  Conselho Real"
 	heading.add_theme_font_size_override("font_size", 24)
 	heading.add_theme_color_override("font_color", Color("d9bb79"))
-	column.add_child(heading)
+	var header = HBoxContainer.new()
+	heading.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	header.add_child(heading)
+	update_button = make_button("Atualizações", show_updates)
+	header.add_child(update_button)
+	column.add_child(header)
 	var subtitle = Label.new()
-	subtitle.text = "Protótipo 0.2 • Senhores e vassalos • Simulação local, sem IA conectada"
+	subtitle.text = "Versão %s • Senhores e vassalos • Simulação local, sem IA conectada" % ProjectSettings.get_setting("application/config/version")
 	subtitle.modulate = Color("a9b7c3")
 	column.add_child(subtitle)
 	summary = Label.new()
@@ -127,7 +137,34 @@ func _ready() -> void:
 			respond_petition(false)
 			petition_dialog.hide())
 	add_child(petition_dialog)
+	updater = Updater.new()
+	add_child(updater)
+	update_dialog = ConfirmationDialog.new()
+	update_dialog.title = "Atualizações do jogo"
+	update_dialog.dialog_autowrap = true
+	update_dialog.cancel_button_text = "Voltar ao jogo"
+	update_dialog.ok_button_text = "Verificar atualizações"
+	update_dialog.confirmed.connect(update_action)
+	add_child(update_dialog)
+	updater.status_changed.connect(func(message):
+		update_status.text = message
+		update_dialog.get_ok_button().disabled = updater.busy
+		if not updater.prepared and not updater.selected.is_empty():
+			update_dialog.ok_button_text = "Baixar atualização"
+		update_button.text = "Atualizações" if updater.selected.is_empty() else "Nova versão disponível")
+	updater.available.connect(func(_release): update_dialog.ok_button_text = "Baixar atualização")
+	updater.ready_to_restart.connect(func(): update_dialog.ok_button_text = "Salvar e reiniciar")
+	update_status = Label.new()
+	update_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	update_status.custom_minimum_size = Vector2(580, 150)
+	update_status.text = "Consulte atualizações publicadas no GitHub. O jogo continua funcionando sem internet.\n\nAo atualizar, sua partida será salva e o jogo reiniciará."
+	update_dialog.add_child(update_status)
 	refresh()
+	if OS.get_cmdline_user_args().has("--resume-save"):
+		load_saved()
+	# Query only. Download and restart always require the player's explicit button.
+	if not OS.has_feature("editor") and not OS.get_cmdline_args().has("--headless"):
+		updater.check_updates()
 
 func make_button(title: String, callback: Callable) -> Button:
 	var button = Button.new()
@@ -201,3 +238,22 @@ func show_petition() -> void:
 func respond_petition(accept: bool) -> void:
 	feedback.text = Kingdom.Politics.respond(game, petition_region, accept).text
 	refresh()
+
+func show_updates() -> void:
+	update_dialog.popup_centered(Vector2i(640, 260))
+	update_dialog.get_ok_button().disabled = updater.busy
+
+func update_action() -> void:
+	# ConfirmationDialog normally hides on OK; keep the progress visible.
+	show_updates.call_deferred()
+	if updater.prepared:
+		var error = game.save_game()
+		if error != OK:
+			update_status.text = "Não foi possível salvar sua partida. A atualização foi cancelada."
+			return
+		if updater.apply_update() == OK:
+			get_tree().quit()
+	elif not updater.selected.is_empty():
+		updater.download_update()
+	else:
+		updater.check_updates()
