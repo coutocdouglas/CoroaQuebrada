@@ -24,3 +24,5 @@ jobs:
         run: /tmp/godot/Godot_v4.7.2-stable_linux.x86_64 --headless --path . --script tests/test_kingdom.gd
       - name: Verificar inicialização da interface
         run: /tmp/godot/Godot_v4.7.2-stable_linux.x86_64 --headless --path . --script tests/test_ui.gd
+      - name: Testar diplomacia, autonomia e compatibilidade
+        run: /tmp/godot/Godot_v4.7.2-stable_linux.x86_64 --headless --path . --script tests/test_politics.gd

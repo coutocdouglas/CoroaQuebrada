@@ -1,0 +1,107 @@
+{
+	"crown": {
+		"food": 95,
+		"gold": 160,
+		"iron": 40,
+		"wood": 60
+	},
+	"ended": false,
+	"ending": "",
+	"history": [
+		{
+			"id": 1,
+			"kind": "accession",
+			"month": 1,
+			"origin": 0,
+			"text": "A Coroa muda de mãos. Três senhores renovam seus juramentos, mas exigem respeito às suas reservas e privilégios."
+		},
+		{
+			"id": 2,
+			"kind": "order",
+			"month": 1,
+			"origin": 0,
+			"text": "Enviar 25 alimentos a Marca de Ferro. Entrega no próximo mês; lealdade +6 e agitação −5 na chegada. A população poderá lembrar da ajuda meses depois."
+		}
+	],
+	"legitimacy": 60,
+	"month": 1,
+	"news": "Seu pai morreu deixando uma união frágil. A geada atingiu o Vale; a Marca pede auxílio. O conselho recomenda formar 30 soldados antes do sexto mês.",
+	"next_event_id": 3,
+	"orders_left": 1,
+	"pending": [
+		{
+			"due": 2,
+			"kind": "aid_arrival",
+			"origin": 2,
+			"region": "marca"
+		}
+	],
+	"regions": {
+		"costa": {
+			"consumption": 22,
+			"id": "costa",
+			"lord": "Lady Maíra Salmar",
+			"loyalty": 62,
+			"name": "Costa das Marés",
+			"production": {
+				"food": 24,
+				"gold": 0,
+				"iron": 4,
+				"wood": 16
+			},
+			"stock": {
+				"food": 55,
+				"gold": 120,
+				"iron": 25,
+				"wood": 60
+			},
+			"unrest": 10,
+			"vassal": "Sir Caio das Docas"
+		},
+		"marca": {
+			"consumption": 24,
+			"id": "marca",
+			"lord": "Lorde Artur Ferren",
+			"loyalty": 48,
+			"name": "Marca de Ferro",
+			"production": {
+				"food": 16,
+				"gold": 0,
+				"iron": 18,
+				"wood": 12
+			},
+			"stock": {
+				"food": 35,
+				"gold": 60,
+				"iron": 80,
+				"wood": 40
+			},
+			"unrest": 10,
+			"vassal": "Lady Brina da Ponte"
+		},
+		"vale": {
+			"consumption": 30,
+			"id": "vale",
+			"lord": "Lady Helena Verdan",
+			"loyalty": 55,
+			"name": "Vale do Trigo",
+			"production": {
+				"food": 38,
+				"gold": 0,
+				"iron": 0,
+				"wood": 9
+			},
+			"stock": {
+				"food": 85,
+				"gold": 80,
+				"iron": 12,
+				"wood": 35
+			},
+			"unrest": 10,
+			"vassal": "Sir Tomás do Moinho"
+		}
+	},
+	"resolved_months": 0,
+	"schema": 1,
+	"troops": 20
+}

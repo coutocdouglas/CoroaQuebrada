@@ -1,5 +1,16 @@
 # Histórico de versões
 
+## 0.2.0 — 2026-11-01
+
+- Pedidos diplomáticos com prazo, aceite, recusa e adiamento sem gasto de ordem.
+- Interesses distintos para os três senhores; troca de alimentos por ferro, carta comercial e socorro às aldeias.
+- Cargas e contrapartidas reservadas ao firmar acordos e entregues no mês seguinte.
+- Comércio autônomo entre regiões, usando excedentes e reservas dos senhores.
+- Apoio próprio dos vassalos, audiência real e mediação autônoma em crises.
+- Salvamento em formato 2, com migração de partidas da 0.1 sem reescrever o arquivo ao carregar.
+- 173 verificações automatizadas, incluindo um save gerado pelo código original da versão 0.1.
+- Mantidos os doze turnos, a memória de decisões e a execução local gratuita. IA e mapa ficam para etapas posteriores.
+
 ## 0.1.0 — 2026-11-01
 
 - Primeira base jogável do Conselho Real em Godot.

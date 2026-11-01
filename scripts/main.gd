@@ -1,7 +1,7 @@
 extends Control
 
 const Kingdom = preload("res://scripts/kingdom.gd")
-const ACTION_LABELS = ["Enviar auxílio alimentar", "Comprar alimentos", "Exigir tributo extraordinário", "Negociar autonomia", "Recrutar soldados"]
+const ACTION_LABELS = ["Enviar auxílio alimentar", "Comprar alimentos", "Exigir tributo extraordinário", "Negociar autonomia", "Recrutar soldados", "Ouvir o vassalo"]
 var game = Kingdom.new()
 var region_picker: OptionButton
 var action_picker: OptionButton
@@ -14,6 +14,10 @@ var feedback: Label
 var confirm_button: Button
 var next_button: Button
 var reset_dialog: ConfirmationDialog
+var petition_button: Button
+var petition_dialog: ConfirmationDialog
+var petition_region = ""
+var refuse_button: Button
 
 func _ready() -> void:
 	var theme_data = Theme.new()
@@ -40,7 +44,7 @@ func _ready() -> void:
 	heading.add_theme_color_override("font_color", Color("d9bb79"))
 	column.add_child(heading)
 	var subtitle = Label.new()
-	subtitle.text = "Protótipo 0.1 • Primeiro ano do reinado • Simulação local, sem IA conectada"
+	subtitle.text = "Protótipo 0.2 • Senhores e vassalos • Simulação local, sem IA conectada"
 	subtitle.modulate = Color("a9b7c3")
 	column.add_child(subtitle)
 	summary = Label.new()
@@ -64,6 +68,8 @@ func _ready() -> void:
 		region_picker.add_item(game.state.regions[id].name)
 	region_picker.item_selected.connect(func(_index): refresh())
 	left.add_child(region_picker)
+	petition_button = make_button("Pedidos do senhor", show_petition)
+	left.add_child(petition_button)
 	region_details = RichTextLabel.new()
 	region_details.bbcode_enabled = true
 	region_details.custom_minimum_size.y = 100
@@ -109,6 +115,18 @@ func _ready() -> void:
 	reset_dialog.dialog_text = "Descartar a partida atual e começar de novo? O arquivo salvo será preservado até você salvar novamente."
 	reset_dialog.confirmed.connect(func(): game.new_game(); feedback.text = "Um novo reinado começou."; refresh())
 	add_child(reset_dialog)
+	petition_dialog = ConfirmationDialog.new()
+	petition_dialog.title = "Audiência diplomática"
+	petition_dialog.dialog_autowrap = true
+	petition_dialog.ok_button_text = "Aceitar acordo"
+	petition_dialog.cancel_button_text = "Decidir depois"
+	petition_dialog.confirmed.connect(func(): respond_petition(true))
+	refuse_button = petition_dialog.add_button("Recusar pedido", false, "refuse")
+	petition_dialog.custom_action.connect(func(action):
+		if action == "refuse":
+			respond_petition(false)
+			petition_dialog.hide())
+	add_child(petition_dialog)
 	refresh()
 
 func make_button(title: String, callback: Callable) -> Button:
@@ -135,9 +153,13 @@ func refresh() -> void:
 	if r.get("recruitment_month", 0) == s.month:
 		food_output = maxi(0, food_output - 6)
 	region_details.text = "[b]%s[/b]\nSenhor: %s\nVassalo: %s\n\nLealdade: %d/100    Agitação: %d/100\n\n[b]Estoques do senhor[/b]\nAlimentos %d  •  Madeira %d  •  Ferro %d  •  Ouro %d\n\nProdução neste mês: %d alimentos, %d madeira, %d ferro\nConsumo mensal: %d alimentos\nRenda local: 8 ouro; tributo normal: 4 se lealdade ≥35.\nEstoques regionais não pertencem à Coroa." % [r.name, r.lord, r.vassal, r.loyalty, r.unrest, r.stock.food, r.stock.wood, r.stock.iron, r.stock.gold, food_output, r.production.wood, r.production.iron, r.consumption]
+	region_details.append_text("\n\n[b]Interesse do senhor[/b]\n%s\nApoio do vassalo à Coroa: %d/100\nCom apoio ≥55 e agitação ≥25, o vassalo pode financiar mediação usando reservas regionais." % [Kingdom.Politics.PROFILES[selected_region()].interest, s.politics.regions[selected_region()].support])
+	var petition = Kingdom.Politics.petition_for(game, selected_region())
+	petition_button.text = "Pedido aberto · responder até o fim do mês %d" % (petition.expires - 1) if not petition.is_empty() else "Nenhum pedido aberto nesta região"
+	petition_button.disabled = petition.is_empty() or s.ended
 	chronicle.clear()
 	for event in s.history:
-		var source = " · consequência da ordem #%d" % event.origin if event.origin > 0 else ""
+		var source = " · origem #%d" % event.origin if event.origin > 0 else ""
 		chronicle.append_text("[color=#d9bb79]Mês %d · #%d%s[/color]\n%s\n\n" % [event.month, event.id, source, event.text])
 	next_button.disabled = s.ended
 	refresh_preview()
@@ -163,4 +185,19 @@ func save() -> void:
 func load_saved() -> void:
 	var error = game.load_game()
 	feedback.text = "Reinado carregado com histórico e consequências pendentes." if error == OK else "Não foi possível carregar. A partida atual foi preservada. " + error_string(error)
+	refresh()
+
+func show_petition() -> void:
+	petition_region = selected_region()
+	var p = Kingdom.Politics.petition_for(game, petition_region)
+	if p.is_empty(): return
+	var accept = Kingdom.Politics.proposal(game, petition_region, true)
+	var refuse = Kingdom.Politics.proposal(game, petition_region, false)
+	petition_dialog.dialog_text = "%s\n\n%s\n\nRecusar: lealdade −5. Ignorar até o prazo: lealdade −3. Cada resposta usa uma ordem.\nPrazo: fim do mês %d.\n\n%s" % [game.state.regions[petition_region].lord, Kingdom.Politics.describe(p.kind), p.expires - 1, "" if accept.ok else accept.text]
+	petition_dialog.get_ok_button().disabled = not accept.ok
+	refuse_button.disabled = not refuse.ok
+	petition_dialog.popup_centered(Vector2i(660, 300))
+
+func respond_petition(accept: bool) -> void:
+	feedback.text = Kingdom.Politics.respond(game, petition_region, accept).text
 	refresh()

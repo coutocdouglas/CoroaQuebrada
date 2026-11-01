@@ -186,7 +186,9 @@ Primeira base jogável 0.1.0 implementada em Godot 4.7.2: Conselho Real, três r
 
 Testes locais cobrem economia, transferências, limites, reconciliação, lembrança da ajuda no mês 10, salvamento e campanhas completas. A interface foi renderizada e inspecionada; há um executável Windows para teste local.
 
-Ainda não implementados: IA e texto livre, atuação autônoma dos vassalos, mapa isométrico, campanhas militares completas e atualizador. Próximo passo: experimentar a primeira partida, ajustar as regras e ampliar as negociações antes da integração de IA.
+Ao encerrar a versão 0.1, ainda faltavam IA e texto livre, atuação autônoma dos vassalos, mapa isométrico, campanhas militares completas e atualizador. A versão seguinte detalhada abaixo avança a negociação e a atuação dos personagens.
+
+Atualização da etapa seguinte: versão 0.2.0 implementa interesses dos senhores, pedidos com prazo, trocas e contrapartidas, comércio autônomo entre regiões, apoio separado dos vassalos e mediação de crises por eles. Acrescenta a ordem de audiência ao vassalo e migração dos saves da 0.1. Regras detalhadas em `docs/REGRAS_V0_2.md`. Os pedidos ainda têm três tipos fixos e não há IA generativa. O mapa isométrico, guerras completas e atualizador continuam pendentes. Validação desta etapa: 173 verificações automatizadas.
 
 Código-fonte enviado à branch `main`. Primeira versão de teste Windows publicada em https://github.com/coutocdouglas/CoroaQuebrada/releases/tag/v0.1.0, com o pacote `CoroaQuebrada-v0.1.0-Windows.zip`. Validação local: 93 verificações da simulação e 8 da interface sem falhas, além da inicialização do executável exportado.
 

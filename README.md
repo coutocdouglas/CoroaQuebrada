@@ -2,13 +2,15 @@
 
 Jogo individual de política medieval e causa e consequência, desenvolvido em Godot. Cada turno corresponde a um mês de um reinado frágil. Projeto pessoal em desenvolvimento, com ferramentas gratuitas e execução local.
 
-## Protótipo 0.1.0 — Conselho Real
+## Protótipo 0.2.0 — Senhores e vassalos
 
-Primeira base jogável, com três regiões, seis nobres, doze meses e duas ordens por mês. Cada senhor possui reservas próprias e produção diversificada. A Coroa administra suas próprias reservas, tropas e legitimidade.
+Base jogável com três regiões, seis nobres, doze meses e duas ordens por mês. Cada senhor possui reservas próprias e produção diversificada. A Coroa administra suas próprias reservas, tropas e legitimidade.
 
 Você pode enviar ajuda, comprar alimentos, exigir tributos extraordinários, negociar autonomia e recrutar soldados. Antes de confirmar, o conselho apresenta custos e efeitos conhecidos. Entregas levam um mês; reações políticas podem demorar. A crônica preserva o vínculo entre uma consequência e a ordem original.
 
-Esta versão **ainda não possui IA integrada, texto livre, mapa isométrico, batalhas ou atualização automática**. Os seis nobres aparecem como senhores e vassalos, mas os vassalos ainda não tomam decisões independentes. O cenário é determinístico para testar as regras; balanceamento e variedade narrativa são provisórios.
+Na versão 0.2, cada senhor apresenta pedidos com prazo. Você pode aceitar, recusar ou adiar. A Marca oferece ferro por alimentos; a Costa negocia madeira e privilégios; o Vale pede socorro às aldeias. Os senhores também compram excedentes uns dos outros quando há escassez. Vassalos têm apoio próprio à Coroa e podem financiar mediação em crises. A nova ordem **Ouvir o vassalo** aumenta esse apoio, mas pode contrariar o senhor.
+
+Esta versão **ainda não possui IA integrada, texto livre, mapa isométrico, batalhas ou atualização automática**. As decisões dos personagens são regras determinísticas, não IA generativa. Os pedidos têm três tipos fixos; personalidades e relações serão ampliadas após testar o equilíbrio.
 
 ## Jogar
 
@@ -22,6 +24,10 @@ Pelo código-fonte:
 
 Na tela, escolha uma região e uma ordem, leia a proposta e confirme. Você pode emitir até duas ordens e então encerrar o mês. O conselho recomenda reunir 30 soldados antes do sexto mês. Ajuda alimentar chega na abertura do próximo mês, depois do consumo do mês encerrado: agir antes da escassez faz diferença.
 
+Use o botão **Pedido aberto** da região para negociar. Aceitar ou recusar usa uma das duas ordens; **Decidir depois** não usa ordem, mas o prazo continua passando. Os termos e o prazo aparecem antes de confirmar. Role os detalhes da região para ver o interesse do senhor e o apoio do vassalo.
+
+Partidas da versão 0.1 podem ser carregadas nesta versão. A migração mantém recursos, histórico e consequências pendentes e não modifica o arquivo até você salvar. Depois de salvar na 0.2, esse arquivo não pode ser carregado na 0.1; faça uma cópia se quiser alternar versões.
+
 **Salvar reinado** grava um arquivo local; **Carregar reinado** recupera estado, crônica e consequências. Há um único espaço de salvamento manual nesta versão. Fechar sem salvar perde alterações recentes. Um novo reinado pede confirmação e só substitui o save quando você salvar novamente.
 
 O save fica no diretório de dados da aplicação da Godot, normalmente `%APPDATA%/Godot/app_userdata/Coroa Quebrada/reinado.json` no Windows. Não coloque partidas ou credenciais no repositório.
@@ -30,6 +36,7 @@ O save fica no diretório de dados da aplicação da Godot, normalmente `%APPDAT
 
 - [Diretrizes e decisões do projeto](DIRETRIZES_DO_PROJETO.md)
 - [Regras da primeira versão](docs/REGRAS_V0_1.md)
+- [Diplomacia e personagens da versão 0.2](docs/REGRAS_V0_2.md)
 - [Histórico de versões](CHANGELOG.md)
 - [Orientações para desenvolvimento assistido](AGENTS.md)
 
@@ -41,9 +48,10 @@ Com a Godot disponível no terminal:
 godot --headless --path . --editor --quit
 godot --headless --path . --script tests/test_kingdom.gd
 godot --headless --path . --script tests/test_ui.gd
+godot --headless --path . --script tests/test_politics.gd
 ```
 
-O workflow do GitHub repete os testes a cada envio. Os testes verificam transferências e entregas, limites de ordens, consequências que dependem das relações atuais, memória no mês 10, salvamento e campanhas completas.
+O workflow do GitHub repete os testes a cada envio. São 173 verificações locais: 105 da simulação, 56 da política e migração e 12 da interface. Cobrem transferências, entregas, limites, reconciliação, memória no mês 10, salvamento, compatibilidade e campanhas completas.
 
 ## Exportar para Windows
 
@@ -58,7 +66,7 @@ O executável inclui os dados do jogo. Distribua junto com os avisos de terceiro
 ## Próximas etapas
 
 1. Jogar e ajustar economia, dificuldade e consequências com base nas partidas.
-2. Ampliar negociação e atuação própria dos personagens.
+2. Ampliar a variedade de pedidos e relações conforme os testes do protótipo 0.2.
 3. Integrar IA para propor ordens estruturadas e narrar fatos validados.
 4. Acrescentar mapa isométrico e feedback visual.
 5. Ampliar guerra, lore e distribuição com atualizações.

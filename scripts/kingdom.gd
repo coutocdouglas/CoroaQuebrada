@@ -2,9 +2,10 @@ extends RefCounted
 ## Simulation owns all facts. A future AI adapter may only propose orders.
 
 const RESOURCES = ["food", "wood", "iron", "gold"]
+const Politics = preload("res://scripts/politics.gd")
 const REGION_IDS = ["vale", "marca", "costa"]
-const ACTIONS = ["aid", "buy_food", "tribute", "pact", "recruit"]
-const SCHEMA_VERSION = 1
+const ACTIONS = ["aid", "buy_food", "tribute", "pact", "recruit", "audience"]
+const SCHEMA_VERSION = 2
 var state: Dictionary
 
 func _init() -> void:
@@ -28,10 +29,12 @@ func new_game() -> void:
 			"marca": region("marca", "Marca de Ferro", "Lorde Artur Ferren", "Lady Brina da Ponte", [35, 40, 80, 60], [16, 12, 18, 0], 24, 48),
 			"costa": region("costa", "Costa das Marés", "Lady Maíra Salmar", "Sir Caio das Docas", [55, 60, 25, 120], [24, 16, 4, 0], 22, 62)
 		},
-		"history": [], "pending": [], "next_event_id": 1,
+		"history": [], "pending": [], "next_event_id": 1, "politics": Politics.initial_state(),
 		"news": "Seu pai morreu deixando uma união frágil. A geada atingiu o Vale; a Marca pede auxílio. O conselho recomenda formar 30 soldados antes do sexto mês."
 	}
 	log_event("accession", "A Coroa muda de mãos. Três senhores renovam seus juramentos, mas exigem respeito às suas reservas e privilégios.")
+	for id in REGION_IDS:
+		Politics.open_petition(self, id)
 
 func log_event(kind: String, message: String, origin: int = 0) -> int:
 	var id = int(state.next_event_id)
@@ -53,6 +56,9 @@ func preview_order(kind: String, region_id: String) -> Dictionary:
 	var cost = {"food": 0, "wood": 0, "iron": 0, "gold": 0}
 	var detail = ""
 	match kind:
+		"audience":
+			cost.gold = 10
+			detail = "Ouvir %s e financiar sua administração local: 10 ouro transferidos à região, apoio do vassalo +10. O senhor perde 3 de lealdade por ser contornado." % r.vassal
 		"aid":
 			cost.food = 25
 			detail = "Enviar 25 alimentos a %s. Entrega no próximo mês; lealdade +6 e agitação −5 na chegada. A população poderá lembrar da ajuda meses depois." % r.name
@@ -92,6 +98,11 @@ func execute_order(kind: String, region_id: String) -> Dictionary:
 	state.orders_left -= 1
 	var origin = log_event("order", proposal.text)
 	match kind:
+		"audience":
+			r.stock.gold += 10
+			var local = state.politics.regions[region_id]
+			local.support = mini(100, int(local.support) + 10)
+			r.loyalty = maxi(0, int(r.loyalty) - 3)
 		"aid":
 			schedule("aid_arrival", region_id, 1, origin)
 		"buy_food":
@@ -153,6 +164,7 @@ func advance_month() -> void:
 	state.resolved_months += 1
 	state.month += 1
 	resolve_pending()
+	Politics.advance(self)
 	if state.month == 6:
 		if state.troops >= 30:
 			state.legitimacy = mini(100, int(state.legitimacy) + 5)
@@ -180,6 +192,11 @@ func resolve_pending() -> void:
 	for event in due:
 		var r = state.regions[event.region]
 		match event.kind:
+			"negotiation_delivery":
+				Politics.deliver(self, event)
+			"regional_delivery":
+				r.stock.food += 15
+				log_event("delivery", "Chegaram a %s os 15 alimentos comprados pelo senhor regional." % r.name, event.origin)
 			"aid_arrival":
 				r.stock.food += 25
 				r.loyalty = mini(100, int(r.loyalty) + 6)
@@ -244,6 +261,12 @@ func load_game(path: String = "user://reinado.json") -> Error:
 	if file == null:
 		return FileAccess.get_open_error()
 	var parsed = JSON.parse_string(file.get_as_text())
+	# Migrate on a temporary object. Never rewrite the player's file on load.
+	if parsed is Dictionary and parsed.get("schema") == 1:
+		parsed.schema = SCHEMA_VERSION
+		parsed.politics = Politics.initial_state()
+		for id in REGION_IDS:
+			parsed.politics.regions[id].next_petition = parsed.get("month", 1)
 	if not valid_state(parsed):
 		return ERR_INVALID_DATA
 	# JSON numbers are floats; restore integer quantities before simulation resumes.
@@ -263,6 +286,8 @@ func normalize_numbers(value: Variant) -> Variant:
 
 func valid_state(data: Variant) -> bool:
 	if not data is Dictionary or data.get("schema") != SCHEMA_VERSION:
+		return false
+	if not Politics.valid(data.get("politics")):
 		return false
 	for key in ["month", "resolved_months", "orders_left", "legitimacy", "troops", "next_event_id"]:
 		if not data.get(key) is float and not data.get(key) is int:
@@ -304,7 +329,9 @@ func valid_state(data: Variant) -> bool:
 	for event in data.pending:
 		if not event is Dictionary or not REGION_IDS.has(event.get("region")):
 			return false
-		if not ["aid_arrival", "purchase_arrival", "resistance", "noble_demands", "popular_support"].has(event.get("kind")):
+		if not ["aid_arrival", "purchase_arrival", "resistance", "noble_demands", "popular_support", "negotiation_delivery", "regional_delivery"].has(event.get("kind")):
+			return false
+		if event.kind == "negotiation_delivery" and not ["relief", "barter", "charter"].has(event.get("deal")):
 			return false
 		if not (event.get("due") is float or event.get("due") is int) or not (event.get("origin") is float or event.get("origin") is int):
 			return false
