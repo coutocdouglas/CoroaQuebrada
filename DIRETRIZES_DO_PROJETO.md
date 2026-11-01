@@ -139,7 +139,7 @@ Avaliar IA local via Ollama conforme o hardware disponível. Ainda não foi esco
 
 Integração com serviço pago é alternativa futura, com controle de gastos. Não depender de planos gratuitos online permanentes. Manter a lógica central testável sem uma conexão de IA ativa.
 
-Versionar o desenvolvimento no GitHub. Repositório fornecido pelo usuário: https://github.com/coutocdouglas/CoroaQuebrada.git. O usuário autorizou o envio das versões ao longo do desenvolvimento. A pasta local está vinculada a esse endereço; o primeiro envio depende de autenticação. Distribuir executáveis em Releases, mantendo ferramentas e builds fora do código-fonte versionado.
+Versionar o desenvolvimento no GitHub. Repositório fornecido pelo usuário: https://github.com/coutocdouglas/CoroaQuebrada.git. O usuário autorizou o envio das versões ao longo do desenvolvimento. A pasta local está vinculada a esse endereço e a autenticação pelo Git Credential Manager foi concluída. Distribuir executáveis em Releases, mantendo ferramentas e builds fora do código-fonte versionado.
 
 Atualização dentro do jogo é objetivo posterior: verificar versão, baixar pacote, validar o conteúdo e aplicar com um atualizador, preservando os saves. Pode exigir reiniciar o jogo, mas deve evitar reinstalação manual a cada versão. Prever versionamento e migração dos arquivos de partida.
 
@@ -188,4 +188,6 @@ Testes locais cobrem economia, transferências, limites, reconciliação, lembra
 
 Ainda não implementados: IA e texto livre, atuação autônoma dos vassalos, mapa isométrico, campanhas militares completas e atualizador. Próximo passo: experimentar a primeira partida, ajustar as regras e ampliar as negociações antes da integração de IA.
 
-O histórico inicial foi registrado em Git localmente. A publicação remota será confirmada apenas após autenticação e envio bem-sucedido ao GitHub.
+Código-fonte enviado à branch `main`. Primeira versão de teste Windows publicada em https://github.com/coutocdouglas/CoroaQuebrada/releases/tag/v0.1.0, com o pacote `CoroaQuebrada-v0.1.0-Windows.zip`. Validação local: 93 verificações da simulação e 8 da interface sem falhas, além da inicialização do executável exportado.
+
+A integração GitHub conectada permite consultar o repositório, mas retornou erro 403 ao tentar gravar. O envio foi realizado pelo Git autenticado com o Git Credential Manager, sem expor credenciais. Use esse caminho nas próximas publicações quando disponível.
