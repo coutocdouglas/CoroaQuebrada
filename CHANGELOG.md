@@ -1,5 +1,15 @@
 # Histórico de versões
 
+## 0.4.0 — 2026-11-01
+
+- Mapa isométrico das três regiões, com fronteiras, castelos, bandeiras, vilas, plantações, florestas, montanhas, estradas e porto.
+- Seleção por território, castelo ou cartão; integração com o seletor e o painel de ordens.
+- Navegação por teclado e adaptação do desenho ao tamanho disponível.
+- Indicadores ligados à partida: alimentos, lealdade, pedidos, geada, agitação nas vilas e mobilização do mês.
+- Mapa como tela principal e crônica preservada em uma segunda aba.
+- 45 verificações novas de geometria, seleção e integração, totalizando 253 na rotina principal e 11 da instalação.
+- Mantidos o formato de save e o contrato de atualização da versão 0.3. O mapa não altera regras de comércio ou guerra.
+
 ## 0.3.0 — 2026-11-01
 
 - Instalador Windows por usuário com atalhos e desinstalador, sem exigir administrador.

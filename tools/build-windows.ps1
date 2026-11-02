@@ -4,7 +4,7 @@
 )
 $ErrorActionPreference = 'Stop'
 Set-Location -LiteralPath (Split-Path -Parent $PSScriptRoot)
-foreach ($test in @('test_kingdom','test_politics','test_ui','test_updater')) {
+foreach ($test in @('test_kingdom','test_politics','test_ui','test_updater','test_map')) {
     & $Godot --headless --path . --script "tests/$test.gd"
     if ($LASTEXITCODE -ne 0) { throw "Teste falhou: $test" }
 }

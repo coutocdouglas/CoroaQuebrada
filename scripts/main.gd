@@ -1,6 +1,7 @@
 extends Control
 
 const Kingdom = preload("res://scripts/kingdom.gd")
+const KingdomMap = preload("res://scripts/kingdom_map.gd")
 const ACTION_LABELS = ["Enviar auxílio alimentar", "Comprar alimentos", "Exigir tributo extraordinário", "Negociar autonomia", "Recrutar soldados", "Ouvir o vassalo"]
 var game = Kingdom.new()
 var region_picker: OptionButton
@@ -23,6 +24,8 @@ var updater
 var update_button: Button
 var update_dialog: ConfirmationDialog
 var update_status: Label
+var realm_map
+var view_tabs: TabContainer
 
 func _ready() -> void:
 	var theme_data = Theme.new()
@@ -54,7 +57,7 @@ func _ready() -> void:
 	header.add_child(update_button)
 	column.add_child(header)
 	var subtitle = Label.new()
-	subtitle.text = "Versão %s • Senhores e vassalos • Simulação local, sem IA conectada" % ProjectSettings.get_setting("application/config/version")
+	subtitle.text = "Versão %s • Mapa do reino • Simulação local, sem IA conectada" % ProjectSettings.get_setting("application/config/version")
 	subtitle.modulate = Color("a9b7c3")
 	column.add_child(subtitle)
 	summary = Label.new()
@@ -69,8 +72,8 @@ func _ready() -> void:
 	body.add_theme_constant_override("separation", 24)
 	column.add_child(body)
 	var left = VBoxContainer.new()
-	left.custom_minimum_size.x = 455
-	left.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	left.custom_minimum_size.x = 390
+	left.size_flags_horizontal = Control.SIZE_FILL
 	left.add_theme_constant_override("separation", 8)
 	body.add_child(left)
 	region_picker = OptionButton.new()
@@ -99,15 +102,19 @@ func _ready() -> void:
 	var right = VBoxContainer.new()
 	right.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	body.add_child(right)
-	var history_title = Label.new()
-	history_title.text = "CRÔNICA DO REINADO"
-	history_title.add_theme_color_override("font_color", Color("d9bb79"))
-	right.add_child(history_title)
+	view_tabs = TabContainer.new()
+	view_tabs.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	right.add_child(view_tabs)
+	realm_map = KingdomMap.new()
+	realm_map.name = "Mapa do reino"
+	view_tabs.add_child(realm_map)
+	realm_map.region_selected.connect(select_map_region)
 	chronicle = RichTextLabel.new()
+	chronicle.name = "Crônica"
 	chronicle.bbcode_enabled = true
 	chronicle.scroll_following = true
 	chronicle.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	right.add_child(chronicle)
+	view_tabs.add_child(chronicle)
 	feedback = Label.new()
 	feedback.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	feedback.custom_minimum_size.y = 32
@@ -199,7 +206,15 @@ func refresh() -> void:
 		var source = " · origem #%d" % event.origin if event.origin > 0 else ""
 		chronicle.append_text("[color=#d9bb79]Mês %d · #%d%s[/color]\n%s\n\n" % [event.month, event.id, source, event.text])
 	next_button.disabled = s.ended
+	realm_map.set_kingdom(s, selected_region())
 	refresh_preview()
+
+func select_map_region(region_id: String) -> void:
+	var index = Kingdom.REGION_IDS.find(region_id)
+	if index < 0: return
+	region_picker.select(index)
+	feedback.text = "%s selecionada. Os dados e as ordens à esquerda se referem a este território." % game.state.regions[region_id].name
+	refresh()
 
 func refresh_preview() -> void:
 	var proposal = game.preview_order(selected_action(), selected_region())

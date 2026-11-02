@@ -1,6 +1,6 @@
 COROA QUEBRADA — Instalador e atualizações dentro do jogo
 
-Execute CoroaQuebrada-Setup-0.3.0.exe uma vez para instalar o programa.
+Execute o arquivo CoroaQuebrada-Setup da versão baixada para instalar.
 Abra pelo menu Iniciar ou pelo atalho escolhido na instalação.
 
 ATUALIZAR
@@ -14,6 +14,12 @@ A consulta inclui versões de teste publicadas pelo autor. Sem internet,
 você pode continuar jogando normalmente. Não é necessário login no GitHub.
 
 JOGAR
+O mapa do reino é a tela principal. Clique no território, castelo ou cartão
+para selecionar uma região. Os dados e as ordens à esquerda mudam junto.
+Use a aba Crônica para ler o histórico. A borda dourada marca a seleção.
+Os cartões mostram alimentos, lealdade e pedidos abertos. O recrutamento
+mostra um acampamento durante o mês. Estradas ainda não alteram prazos.
+
 Escolha uma região, leia a proposta e confirme até duas ordens por mês.
 Pedidos abertos permitem aceitar, recusar ou decidir depois. As regiões
 têm seus próprios estoques e os acordos podem gerar consequências futuras.
@@ -29,6 +35,6 @@ Se uma atualização falhar, o atualizador tenta restaurar os arquivos antigos.
 O diagnóstico fica em atualizacao.log na pasta do programa. Se algum arquivo
 estiver bloqueado, feche outras janelas do jogo antes de tentar novamente.
 
-Ainda sem IA generativa, texto livre, mapa isométrico e guerras completas.
+Ainda sem IA generativa, texto livre, animação de unidades e guerras completas.
 Desenvolvimento: https://github.com/coutocdouglas/CoroaQuebrada
 Licenças: THIRD_PARTY_NOTICES.md no diretório do programa.

@@ -5,6 +5,7 @@
 - Converse em português e explique decisões com linguagem acessível; o usuário está começando a criar jogos.
 - Priorize ferramentas gratuitas, uso local e baixo custo recorrente.
 - Antes de recomendar uma troca de modelo de IA ou nível de raciocínio, avise o usuário, explique o motivo e indique a configuração sugerida. Não afirme ter trocado o modelo sem confirmação. Evite trocas desnecessárias.
+- Ao iniciar cada nova etapa, indique antes da implementação o modelo e o nível de raciocínio recomendados, mesmo que a recomendação seja manter a configuração anterior. O usuário reiterou essa preferência antes da etapa do mapa.
 - Diferencie o modelo usado para desenvolver o projeto do modelo integrado ao jogo.
 - A IA interpreta e narra; regras validadas controlam o estado, os recursos e as consequências. Preserve a coerência do histórico.
 - As regiões têm produção diversificada e desigual, podem não produzir certos recursos e podem obtê-los por comércio. Recursos regionais não pertencem automaticamente à Coroa.

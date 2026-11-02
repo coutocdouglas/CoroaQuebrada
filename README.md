@@ -2,7 +2,7 @@
 
 Jogo individual de política medieval e causa e consequência, desenvolvido em Godot. Cada turno corresponde a um mês de um reinado frágil. Projeto pessoal em desenvolvimento, com ferramentas gratuitas e execução local.
 
-## Protótipo 0.3.0 — Instalação e atualizações
+## Protótipo 0.4.0 — Mapa do reino
 
 Base jogável com três regiões, seis nobres, doze meses e duas ordens por mês. Cada senhor possui reservas próprias e produção diversificada. A Coroa administra suas próprias reservas, tropas e legitimidade.
 
@@ -12,11 +12,15 @@ Na versão 0.2, cada senhor apresenta pedidos com prazo. Você pode aceitar, rec
 
 Na versão 0.3, o jogo ganha instalador por usuário para Windows, atalhos, desinstalador e atualização pelo botão **Atualizações**. Ele consulta o GitHub ao abrir, oferece o download de versões mais novas e salva a partida antes de reiniciar para aplicar a atualização. Não exige conta no GitHub para jogar ou atualizar.
 
-Esta versão **ainda não possui IA integrada, texto livre, mapa isométrico ou batalhas completas**. As decisões dos personagens são regras determinísticas, não IA generativa. Os pedidos têm três tipos fixos; personalidades e relações serão ampliadas após testar o equilíbrio.
+Na versão 0.4, o mapa isométrico é a tela principal. Clique em um território, castelo ou cartão para selecionar a região: os dados e as ordens à esquerda mudam junto. A borda dourada identifica a seleção. Use as setas com o mapa em foco para percorrer as regiões. A aba **Crônica** preserva o histórico completo.
+
+Castelos, vilas, estradas e porto compõem a primeira representação do reino. Alimentos, lealdade e pedidos vêm da partida. Plantações refletem geada e escassez, vilas sinalizam agitação elevada e recrutamentos mostram um acampamento durante o mês. Essa é uma primeira arte geométrica, sem animação, construção livre ou movimentação de exércitos.
+
+Esta versão **ainda não possui IA integrada, texto livre ou batalhas completas**. As decisões dos personagens são regras determinísticas, não IA generativa. Os pedidos têm três tipos fixos; personalidades e relações serão ampliadas após testar o equilíbrio.
 
 ## Jogar
 
-Baixe `CoroaQuebrada-Setup-0.3.0.exe` em [Releases](https://github.com/coutocdouglas/CoroaQuebrada/releases/tag/v0.3.0), execute e abra **Coroa Quebrada** pelo menu Iniciar. A instalação padrão fica em `%LOCALAPPDATA%/Programs/CoroaQuebrada`, sem exigir administrador. Há opção de atalho na área de trabalho e desinstalação pelo Windows.
+Se já usa a versão 0.3, abra **Atualizações** no próprio jogo para receber a versão 0.4 e manter sua partida. Para a primeira instalação, baixe `CoroaQuebrada-Setup-0.4.0.exe` em [Releases](https://github.com/coutocdouglas/CoroaQuebrada/releases/tag/v0.4.0), execute e abra **Coroa Quebrada** pelo menu Iniciar. A instalação padrão fica em `%LOCALAPPDATA%/Programs/CoroaQuebrada`, sem exigir administrador. Há opção de atalho na área de trabalho e desinstalação pelo Windows.
 
 Para as próximas versões, use **Atualizações → Baixar atualização → Salvar e reiniciar**, dentro do jogo. A consulta inclui os protótipos publicados pelo autor; rascunhos, versões antigas e pacotes incompatíveis são ignorados. O download e o reinício dependem da sua confirmação. Sem internet ou se o GitHub estiver indisponível, o jogo continua funcionando. As versões 0.1 e 0.2 precisam desta instalação inicial, pois ainda não tinham atualizador.
 
@@ -32,7 +36,7 @@ Na tela, escolha uma região e uma ordem, leia a proposta e confirme. Você pode
 
 Use o botão **Pedido aberto** da região para negociar. Aceitar ou recusar usa uma das duas ordens; **Decidir depois** não usa ordem, mas o prazo continua passando. Os termos e o prazo aparecem antes de confirmar. Role os detalhes da região para ver o interesse do senhor e o apoio do vassalo.
 
-Partidas das versões 0.1 e 0.2 podem ser carregadas nesta versão. A migração mantém recursos, histórico e consequências pendentes e não modifica o arquivo até você salvar. O formato continua sendo o da 0.2. Saves no formato 2 não podem ser carregados na 0.1; faça uma cópia se quiser alternar versões. Instalar, atualizar e desinstalar preservam a pasta de partidas em AppData.
+Partidas das versões 0.1, 0.2 e 0.3 podem ser carregadas nesta versão. A migração mantém recursos, histórico e consequências pendentes e não modifica o arquivo até você salvar. O formato continua sendo o da 0.2. O mapa reconstrói seus indicadores a partir do save. Saves no formato 2 não podem ser carregados na 0.1; faça uma cópia se quiser alternar versões. Instalar, atualizar e desinstalar preservam a pasta de partidas em AppData.
 
 **Salvar reinado** grava um arquivo local; **Carregar reinado** recupera estado, crônica e consequências. Há um único espaço de salvamento manual nesta versão. Fechar sem salvar perde alterações recentes. Um novo reinado pede confirmação e só substitui o save quando você salvar novamente.
 
@@ -44,6 +48,7 @@ O save fica no diretório de dados da aplicação da Godot, normalmente `%APPDAT
 - [Regras da primeira versão](docs/REGRAS_V0_1.md)
 - [Diplomacia e personagens da versão 0.2](docs/REGRAS_V0_2.md)
 - [Instalador, atualização e publicação](docs/ATUALIZACOES.md)
+- [Mapa do reino e indicadores](docs/MAPA.md)
 - [Histórico de versões](CHANGELOG.md)
 - [Orientações para desenvolvimento assistido](AGENTS.md)
 
@@ -57,9 +62,10 @@ godot --headless --path . --script tests/test_kingdom.gd
 godot --headless --path . --script tests/test_ui.gd
 godot --headless --path . --script tests/test_politics.gd
 godot --headless --path . --script tests/test_updater.gd
+godot --headless --path . --script tests/test_map.gd
 ```
 
-O workflow do GitHub repete os testes a cada envio. São 208 verificações: 105 da simulação, 56 da política e migração, 14 da interface, 20 da seleção e download e 13 da aplicação Windows. O teste Windows roda com `powershell -File tests/test_update_windows.ps1` e usa apenas diretórios de teste dentro de `work/`.
+O workflow do GitHub repete os testes a cada envio. São 253 verificações: 105 da simulação, 56 da política e migração, 14 da interface, 20 da seleção e download, 45 do mapa e 13 da aplicação Windows. O teste Windows roda com `powershell -File tests/test_update_windows.ps1` e usa apenas diretórios de teste dentro de `work/`.
 
 Além disso, `tests/test_install_windows.ps1` executa 11 verificações locais com o instalador de AppId exclusivo de teste: instala, abre o jogo, aplica o pacote real, verifica o binário resultante, inicia com retomada de save e desinstala preservando arquivos não gerenciados.
 
@@ -78,7 +84,7 @@ O executável inclui os dados do jogo. Para preparar instalador e ZIP completos,
 1. Jogar e ajustar economia, dificuldade e consequências com base nas partidas.
 2. Ampliar a variedade de pedidos e relações conforme os testes do protótipo 0.2.
 3. Integrar IA para propor ordens estruturadas e narrar fatos validados.
-4. Acrescentar mapa isométrico e feedback visual.
+4. Detalhar e animar o mapa conforme as novas mecânicas do reino.
 5. Ampliar guerra e lore; manter a distribuição com atualizações pelo aplicativo.
 
 Godot usa licença MIT; ver [avisos de terceiros](THIRD_PARTY_NOTICES.md). A licença de distribuição do código e conteúdo próprio deste projeto ainda será definida pelo autor.

@@ -19,9 +19,11 @@ Assert-True (Test-Path -LiteralPath (Join-Path $target 'unins000.exe')) 'Desinst
 $gameProcess = Start-Process -FilePath $exe -ArgumentList '--headless','--quit-after','5' -WindowStyle Hidden -PassThru -Wait
 Assert-True ($gameProcess.ExitCode -eq 0) 'Jogo instalado não iniciou'
 Set-Content -LiteralPath (Join-Path $target 'sentinela-partida.txt') -Value 'preservar'
-$zip = Join-Path $project 'outputs\CoroaQuebrada-v0.3.0-Windows.zip'
+$version = [regex]::Match((Get-Content -LiteralPath (Join-Path $project 'project.godot') -Raw), 'config/version="(\d+\.\d+\.\d+)"').Groups[1].Value
+if (-not $version) { throw 'Versão do projeto não encontrada.' }
+$zip = Join-Path $project "outputs\CoroaQuebrada-v$version-Windows.zip"
 $hash = (Get-FileHash -LiteralPath $zip -Algorithm SHA256).Hash
-& powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File (Join-Path $target 'Atualizar.ps1') -InstallDir $target -Package $zip -ExpectedHash $hash -ParentId 0 -Version '0.3.0' -NoRestart
+& powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File (Join-Path $target 'Atualizar.ps1') -InstallDir $target -Package $zip -ExpectedHash $hash -ParentId 0 -Version $version -NoRestart
 Assert-True ($LASTEXITCODE -eq 0) 'Aplicação do pacote real falhou'
 Assert-True ((Get-FileHash -LiteralPath $exe -Algorithm SHA256).Hash -eq (Get-FileHash -LiteralPath (Join-Path $project 'outputs\CoroaQuebrada.exe') -Algorithm SHA256).Hash) 'Binário instalado difere do pacote real'
 $gameProcess = Start-Process -FilePath $exe -ArgumentList '--headless','--quit-after','5','--','--resume-save' -WindowStyle Hidden -PassThru -Wait
