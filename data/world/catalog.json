@@ -1,0 +1,14 @@
+{"schema":1,"source_state_id":1,"regions":[
+{"id":"coroa","name":"Terras da Coroa"},
+{"id":"vale","name":"Vale do Trigo"},
+{"id":"marca","name":"Marca de Ferro"},
+{"id":"costa","name":"Costa das Marés"},
+{"id":"veu","name":"Altos do Véu"},
+{"id":"bosques","name":"Bosques de Âmbar"},
+{"id":"campos","name":"Campos do Alazão"},
+{"id":"pantanos","name":"Pântanos de Salgueiro"},
+{"id":"cinzas","name":"Fronteira das Cinzas"},
+{"id":"ilhas","name":"Ilhas do Farol"},
+{"id":"passos","name":"Passos da Vigília"},
+{"id":"baixadas","name":"Baixadas de Prata"}
+]}

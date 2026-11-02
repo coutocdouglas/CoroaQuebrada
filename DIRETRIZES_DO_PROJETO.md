@@ -90,6 +90,12 @@ Exemplo de cadeia: ajuda real distribuída sem consultar o senhor local → fome
 
 ## 7. Visual e guerra
 
+Refinamento geográfico solicitado: evitar formato regular e regiões organizadas em grade. Conceito v4 (`outputs/ConceitoVisual-v4.png`) apresenta reino costeiro ligado a um continente, fronteiras terrestres, territórios assimétricos, baías e penínsulas. As Terras da Coroa foram propostas junto ao litoral, fora do centro. Mantém nove regiões e vista local isométrica. Geografia conceitual ainda sujeita à avaliação; não implementada.
+
+Direção mais recente aprovada pelo usuário: ampliar o reino para nove regiões, acrescentando Bosques de Âmbar, Campos do Alazão, Pântanos de Salgueiro e Fronteira das Cinzas às cinco originais. Usar mapa geral visto de cima, com fronteiras contínuas, cores territoriais e nomes legíveis; abrir uma vista isométrica da região para explorar domínios de vassalos. Carregar detalhes por região é a direção de implementação, sem promessa de ganho de desempenho antes de medir. A produção continua diversificada em todas as regiões. Conceito v3 salvo em `outputs/ConceitoVisual-v3.png`, prompt em `outputs/ConceitoVisual-v3-prompt.txt`. Os nomes secundários de capitais e lugares sugeridos pela imagem são provisórios, não lore definida. A simulação publicada continua com três regiões; expansão e navegação ainda não implementadas. Esta decisão substitui o limite visual anterior de cinco regiões.
+
+Revisão de direção visual: o usuário aprovou o estilo ilustrado, mas pediu escala maior e todas as cinco regiões previstas. A navegação deverá permitir zoom e arrasto, passando da visão do reino aos domínios dos vassalos de cada senhor. Terreno ilustrado com elementos interativos separados é a direção aceita. O conceito v2 em `outputs/ConceitoVisual-v2.png` mostra as cinco regiões e uma vista local do domínio de Tomás do Moinho; o nome “Domínio do Moinho” é proposta artística. A quantidade e os nomes dos demais domínios ainda serão definidos. Esta imagem demonstra a intenção visual; não é uma implementação de zoom nem amplia por si só as três regiões da simulação publicada.
+
 Direção visual: mapa estratégico isométrico com construções simples, castelos, vilas, estradas, plantações e marcadores de exércitos.
 
 O mapa deve refletir a partida com variações de arte preparadas: bandeiras, danos, acampamentos, plantações e construções. Não é necessário gerar um mapa novo por IA a cada mês.
@@ -203,3 +209,24 @@ Próxima prioridade aprovada: antecipar o mapa antes da IA. Versão 0.4.0 acresc
 Etapa seguinte planejada: integração com Gemini para ordens por texto, com Flash Lite para interpretação e tarefas simples e Flash para conversas e narrativa mais complexas. Os identificadores exatos dos modelos e a disponibilidade gratuita serão conferidos na configuração; o usuário já usa essa combinação em outro jogo. Chaves devem ser configuradas localmente, sem inclusão no código, saves de partida ou GitHub. A integração ainda não está implementada na 0.4.
 
 Antes da implementação do mapa, foi indicada a configuração GPT-6.1 Sol com raciocínio Alto para desenvolver o projeto. O usuário pediu indicação de modelo antes de cada etapa, mesmo quando não houver recomendação de troca.
+
+Revisão após a 0.4: o usuário rejeitou a qualidade visual do mapa. Foi acordado pausar a integração de IA e criar uma imagem de referência da tela antes de implementar a reformulação. Primeiro conceito gerado com ImageGen integrado, disponível localmente em `outputs/ConceitoVisual-v1.png`, com o prompt em `outputs/ConceitoVisual-v1-prompt.txt`. A proposta usa terreno orgânico, edifícios detalhados em perspectiva isométrica, mapa ocupando a maior parte da tela, barra de recursos compacta e painel contextual à direita. É uma direção artística para avaliação; ainda não foi aprovada nem implementada. O jogo publicado permanece na 0.4.
+
+## 14. Direção atual do mundo — 2 de novembro de 2026
+
+Decisão do usuário: expandir o reino para 12 regiões na história e usar o Azgaar Fantasy Map Generator como ferramenta de criação da geografia. Esta decisão substitui os totais anteriores de cinco ou nove regiões no mundo planejado. A versão publicada continua com três regiões; a ampliação ainda precisa ser implementada e ter a compatibilidade dos saves planejada.
+
+Visão geral de topo, com camadas selecionáveis para política, comércio, reservas e situação militar. Reservas, produção e consumo devem ser distintos. Rotas precisam indicar origem, destino e mercadorias, e futuramente prazo, risco e bloqueios conforme regras implementadas. Vista isométrica ao explorar regiões e domínios de vassalos.
+
+Usar o Azgaar na criação do mundo e avaliar uma exportação de dados antes de definir o importador. O jogo deverá funcionar com os dados locais preparados, sem depender de acessar o site durante a partida. Verificar os termos de reutilização e atribuições dos elementos efetivamente aproveitados durante essa avaliação. Preservar a geografia ao aplicar o estilo visual; imagens geradas não devem redefinir fronteiras, rios ou conexões aprovadas.
+
+Nove regiões já propostas: Terras da Coroa, Vale do Trigo, Marca de Ferro, Costa das Marés, Altos do Véu, Bosques de Âmbar, Campos do Alazão, Pântanos de Salgueiro e Fronteira das Cinzas.
+
+Três nomes adicionais propostos, ainda sujeitos a revisão do usuário:
+
+- Ilhas do Farol: arquipélago, pilotagem marítima e influência sobre a entrada da grande baía; dependência de abastecimento continental pode alimentar disputas.
+- Passos da Vigília: vales e passagens de montanha, fortalezas e cobrança de pedágios sobre as conexões entre interior e litoral.
+- Baixadas de Prata: colinas e bacias fluviais com cidades mercantis e algumas minas de prata; credores locais podem financiar a Coroa em troca de concessões.
+
+Essas identidades não tornam a produção exclusiva. Todas as regiões podem produzir diversos recursos em quantidades diferentes e acumular outros por comércio. Prata é uma característica de ambientação, não um novo recurso jogável aprovado. Número de vassalos, casas governantes, limites, posições e relações serão definidos na preparação do mapa; não ficam estabelecidos por esses nomes.
+Preparação Azgaar implementada: catálogo de 12 regiões e importador Node.js para JSON Full, com validação de territórios, geometria, povoações e rotas. Documentação em docs/AZGAAR.md. Doze testes sintéticos passaram, além dos 240 testes Godot existentes. Ainda não foi importado um mapa Full real nem conectada esta estrutura à interface; o jogo publicado permanece 0.4.0. Próxima necessidade: produzir o mapa fonte com as 12 províncias e validar sua exportação completa.
