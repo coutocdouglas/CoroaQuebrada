@@ -96,19 +96,20 @@ func update_details() -> void:
 	regions_list.select(int(r.number)-1)
 	var names = []
 	for id in r.neighbors: names.append(canvas.region_lookup[id].name)
-	details.text = "[b]%s[/b]\nSede: %s\n%d povoações registradas\n\n" % [r.name,r.seat_name,r.settlements]
+	var content = "[b]%s[/b]\nSede: %s\n%d povoações registradas\n\n" % [r.name,r.seat_name,r.settlements]
 	if canvas.mode == "routes":
 		var count = 0
 		for route in canvas.data.routes:
 			if r.id in route.regions: count += 1
-		details.append_text("%d caminhos tocam este território.\nDourado: terra · Azul: mar.\nCaminhos representam infraestrutura; ainda não são remessas comerciais.\n\n" % count)
+		content += "%d caminhos tocam este território.\nDourado: terra · Azul: mar.\nCaminhos representam infraestrutura; ainda não são remessas comerciais.\n\n" % count
 	elif canvas.mode == "reserves":
-		details.append_text("Verde: mais meses de alimento. Vermelho: menor cobertura. Cinza: sem simulação nesta versão.\n\n")
+		content += "Verde: mais meses de alimento. Vermelho: menor cobertura. Cinza: sem simulação nesta versão.\n\n"
 	if snapshot.has(r.id):
 		var state = snapshot[r.id]
-		details.append_text("[b]Reservas do senhor[/b]\n%d alimentos · %d madeira\n%d ferro · %d ouro\nConsumo: %d alimentos/mês\nCobertura atual: %.1f meses\n\n" % [state.stock.food,state.stock.wood,state.stock.iron,state.stock.gold,state.consumption,float(state.stock.food)/maxf(1.0,state.consumption)])
+		content += "[b]Reservas do senhor[/b]\n%d alimentos · %d madeira\n%d ferro · %d ouro\nConsumo: %d alimentos/mês\nCobertura atual: %.1f meses\n\n" % [state.stock.food,state.stock.wood,state.stock.iron,state.stock.gold,state.consumption,float(state.stock.food)/maxf(1.0,state.consumption)]
 	else:
-		details.append_text("Esta região já possui geografia. Seus governantes e sua economia serão integrados na próxima expansão.\n\n")
-	details.append_text("[b]Fronteiras terrestres[/b]\n" + ", ".join(names))
+		content += "Esta região já possui geografia. Seus governantes e sua economia serão integrados na próxima expansão.\n\n"
+	content += "[b]Fronteiras terrestres[/b]\n" + ", ".join(names)
+	details.text = content
 	govern_button.disabled = not snapshot.has(r.id)
 

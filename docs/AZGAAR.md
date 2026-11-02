@@ -31,7 +31,7 @@ Adaptação territorial: províncias originais 3→1, 14→2, 15→13 e 16→6; 
 
 ## Validação
 
-15 testes Node cobrem contrato, entradas inválidas, importação real, hash da fonte, capitais e conectividade. O novo teste Godot cobre 46 verificações de seleção em três tamanhos, zoom, reenquadramento, reservas, isolamento do estado e retorno ao conselho. O executável exportado deve confirmar `ATLAS_EXPORT_OK`, garantindo a presença dos dados no pacote.
+15 testes Node cobrem contrato, entradas inválidas, importação real, hash da fonte, capitais e conectividade. O novo teste Godot cobre 48 verificações de seleção em três tamanhos, zoom, reenquadramento, reservas, isolamento do estado e retorno ao conselho. O executável exportado deve confirmar `ATLAS_EXPORT_OK`, garantindo a presença dos dados no pacote.
 
 ## Licença
 
