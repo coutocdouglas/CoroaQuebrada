@@ -40,3 +40,7 @@
 - Crônica, finais e salvamento local versionado com validação ao carregar.
 - Testes automatizados de economia, memória, salvamento e campanhas completas.
 - IA, mapa isométrico e atualizador ficam para etapas posteriores.
+
+## 0.5.0 — Atlas das 12 regiões
+
+Mapa real do Azgaar, fonte editável, zoom e arrasto, seleção territorial, caminhos e reservas conhecidas. A economia permanece nas três regiões do protótipo. Testes de fonte real e navegação adicionados.

@@ -1,38 +1,40 @@
-# Integração geográfica com Azgaar
+# Atlas do reino — versão 0.5
 
-## Entrega desta etapa
+O jogo agora abre um atlas de topo com as 12 regiões. A geografia foi gerada no Azgaar 1.156.0 (semente 20261102, modelo peninsula, 1600 × 1000) e adaptada dentro da sessão do gerador. A fonte editável foi reaberta no Azgaar e conferida: 12 províncias ativas e capital em Porto da Coroa.
 
-Catálogo de 12 regiões em `data/world/catalog.json` e ferramenta local `tools/import-azgaar.mjs`, sem dependências externas além de Node.js 22 ou posterior. Não altera saves nem a economia da versão 0.4. A ferramenta prepara JSON geográfico para a futura vista de topo; ainda não está conectada à interface Godot.
+## Navegação
 
-## Preparação do mapa
+- Clique em um território ou na lista para selecioná-lo.
+- Use a roda do mouse ou os botões − e + para aproximar; arraste para mover.
+- Reenquadrar ou Home restaura a vista inicial. O limite é 6×.
+- Territórios: fronteiras, sedes e identificação numérica ligada à lista; nomes aparecem ao aproximar ou selecionar.
+- Caminhos terrestres e marítimos: destaca os trajetos que tocam a região selecionada. Dourado indica terra, azul indica mar. São caminhos geográficos; não representam remessas ativas.
+- Reservas conhecidas: mostra cobertura alimentar calculada a partir de estoque e consumo reais. Regiões sem simulação ficam cinza, sem valores inventados.
+- Governar esta região abre o conselho para Vale, Marca ou Costa. Voltar ao conselho mantém a região previamente selecionada. O botão Atlas do reino permite retornar.
 
-1. No Azgaar, criar uma massa continental com reino costeiro, baía, ilhas e fronteiras terrestres. Evitar uma ilha quadrada ou distribuição em grade.
-2. Usar um estado para o reino e 12 províncias internas. Estados vizinhos podem existir. Renomear as províncias exatamente como no catálogo. A capital real deve ficar no litoral.
-3. Conferir o identificador do estado e preencher `source_state_id` no catálogo. O valor 1 é apenas configuração inicial, não identificação garantida de um mapa ainda não escolhido.
-4. Ajustar capitais, povoações e rotas. Guardar o arquivo `.map` como fonte editável.
-5. Em Export, escolher JSON Full. Minimal e GridCells não servem para este importador: não contêm a mesma geometria completa.
-6. Executar: `node tools/import-azgaar.mjs caminho/Full.json data/world/catalog.json outputs/mundo-importado.json`.
+## Dados e limites
 
-O destino deve ser novo: a ferramenta recusa sobrescrever uma versão anterior.
+São 12 regiões, 68 povoações e 62 caminhos importados que tocam o reino. Os 227 rios desenhados pertencem ao mapa completo, incluindo terras externas. A capital real fica em um porto. Todas as regiões são alcançáveis no grafo combinado de fronteiras terrestres e caminhos gerados, incluindo ligação marítima das Ilhas do Farol.
 
-## Contrato e limites
+Esta entrega acrescenta navegação e contexto geográfico. A simulação econômica continua com três regiões. A extensão da economia para 12 regiões, os governantes adicionais, domínios de vassalos, remessas com prazo/bloqueio e cenas isométricas detalhadas ainda precisam de implementação. Saves e o contrato do atualizador permanecem compatíveis.
 
-Preserva polígonos por célula, vizinhança regional, relevo, bioma, população bruta, povoações e traçados de rotas que tocam o reino. Mantém rios, culturas e religiões da fonte como dados auxiliares, ainda sem processamento próprio. Coordenadas são as coordenadas de desenho do JSON Full; não misturar com longitude/latitude de GeoJSON.
+## Fontes reproduzíveis
 
-População bruta não equivale a habitantes finais: é necessário aplicar os parâmetros de escala do gerador antes de equilibrar consumo, tributos e recrutamento. Uma província é uma região de senhor; povoações não são automaticamente vassalos. Os domínios precisam de subdivisão própria posterior, com limites, governantes e vínculos.
+- `data/world/source/azgaar-full.json`: exportação Full real pelo botão oficial do gerador.
+- `data/world/source/coroa-quebrada.map.gz`: fonte editável, descompactável para `.map` e carregável no Azgaar. É um arquivo de autoria do mundo, não um save de partida.
+- `data/world/catalog.json`: identificadores estáveis das 12 regiões.
+- `tools/import-azgaar.mjs`: valida e adapta Full JSON.
+- `tools/prepare-atlas.mjs`: gera `kingdom.json` e `atlas.json`; executar com Node 22 ou posterior a partir da raiz do projeto.
+- `atlas.json` contém a geometria preparada, capitais, vizinhança, caminhos e hash da fonte. Apenas esse arquivo geográfico entra no executável.
 
-Rotas importadas são caminhos geográficos, não vendas em execução. Podem cruzar terras estrangeiras. Custo, distância calibrada, tempo de transporte, bloqueios e estoques serão calculados pela simulação em etapa posterior. A importação não cria recursos, lealdades ou eventos.
+Adaptação territorial: províncias originais 3→1, 14→2, 15→13 e 16→6; as 12 restantes receberam os nomes do catálogo. A ilha principal de Farol foi reunida na província 13 e seu porto incluído no reino. A capital passou ao povoado 94, Porto da Coroa. As divisões seguem a geometria gerada; os nomes restantes de povoações são provisórios. A correspondência visual entre terreno e vocações regionais ainda poderá ser refinada durante o equilíbrio do mundo.
 
-Ainda falta selecionar/produzir o mapa definitivo de 12 províncias, testar a exportação real completa, verificar sua conectividade, desenhar a vista navegável e planejar a migração da simulação de três regiões. Não há release instalável nova nesta entrega de preparação.
+## Validação
 
-## Verificação
+15 testes Node cobrem contrato, entradas inválidas, importação real, hash da fonte, capitais e conectividade. O novo teste Godot cobre 46 verificações de seleção em três tamanhos, zoom, reenquadramento, reservas, isolamento do estado e retorno ao conselho. O executável exportado deve confirmar `ATLAS_EXPORT_OK`, garantindo a presença dos dados no pacote.
 
-`node --test tests/test_azgaar.mjs`: 12 cenários, com dados sintéticos pequenos seguindo o contrato oficial. Foi consultado o código `src/services/io/export-json.ts` do projeto Azgaar e baixado seu exemplo oficial `tests/fixtures/1.154.0.map` para inspeção local. O `.map` usa um formato diferente e NÃO foi convertido nem contado como uma importação Full bem-sucedida. Nenhuma geografia sintética é apresentada como um mapa real do gerador.
+## Licença
 
-## Referências e licença
+Azgaar é distribuído sob MIT, com autorização expressa para mapas e derivados. O aviso completo está em `THIRD_PARTY_NOTICES.md` e `data/world/source/AZGAAR-LICENSE.txt`.
 
-- https://github.com/Azgaar/Fantasy-Map-Generator/blob/master/src/services/io/export-json.ts
-- https://github.com/Azgaar/Fantasy-Map-Generator/wiki/GIS-data-export
-- https://github.com/Azgaar/Fantasy-Map-Generator/blob/master/LICENSE
-
-A licença oficial é MIT e autoriza expressamente mapas e derivados, inclusive comerciais. Este adaptador foi escrito para Coroa Quebrada com base na estrutura documentada; não incorpora o gerador nem seus elementos gráficos. Registrar a fonte e os avisos aplicáveis quando o mapa final e qualquer arte externa forem incorporados. Exportação JSON não produz uma cena isométrica: essa apresentação será construída separadamente.
+Referências: https://github.com/Azgaar/Fantasy-Map-Generator/wiki/GIS-data-export e https://github.com/Azgaar/Fantasy-Map-Generator/blob/master/src/services/io/export-json.ts .

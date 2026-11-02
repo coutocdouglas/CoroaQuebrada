@@ -26,6 +26,7 @@ var update_dialog: ConfirmationDialog
 var update_status: Label
 var realm_map
 var view_tabs: TabContainer
+var atlas
 
 func _ready() -> void:
 	var theme_data = Theme.new()
@@ -54,6 +55,7 @@ func _ready() -> void:
 	heading.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	header.add_child(heading)
 	update_button = make_button("Atualizações", show_updates)
+	header.add_child(make_button('Atlas do reino', func(): atlas.show()))
 	header.add_child(update_button)
 	column.add_child(header)
 	var subtitle = Label.new()
@@ -144,6 +146,9 @@ func _ready() -> void:
 			respond_petition(false)
 			petition_dialog.hide())
 	add_child(petition_dialog)
+	atlas = preload('res://scripts/atlas_panel.gd').new()
+	add_child(atlas)
+	atlas.govern_region.connect(func(id): select_map_region(id); atlas.hide())
 	updater = Updater.new()
 	add_child(updater)
 	update_dialog = ConfirmationDialog.new()
@@ -169,6 +174,11 @@ func _ready() -> void:
 	refresh()
 	if OS.get_cmdline_user_args().has("--resume-save"):
 		load_saved()
+	if OS.get_cmdline_user_args().has("--verify-atlas"):
+		var valid = atlas.canvas.data.regions.size() == 12 and atlas.canvas.data.settlements.size() == 68
+		print("ATLAS_EXPORT_OK" if valid else "ATLAS_EXPORT_FAILED")
+		get_tree().quit(0 if valid else 1)
+		return
 	# Query only. Download and restart always require the player's explicit button.
 	if not OS.has_feature("editor") and not OS.get_cmdline_args().has("--headless"):
 		updater.check_updates()
@@ -207,6 +217,7 @@ func refresh() -> void:
 		chronicle.append_text("[color=#d9bb79]Mês %d · #%d%s[/color]\n%s\n\n" % [event.month, event.id, source, event.text])
 	next_button.disabled = s.ended
 	realm_map.set_kingdom(s, selected_region())
+	atlas.set_kingdom(s)
 	refresh_preview()
 
 func select_map_region(region_id: String) -> void:

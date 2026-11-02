@@ -88,3 +88,7 @@ O executável inclui os dados do jogo. Para preparar instalador e ZIP completos,
 5. Ampliar guerra e lore; manter a distribuição com atualizações pelo aplicativo.
 
 Godot usa licença MIT; ver [avisos de terceiros](THIRD_PARTY_NOTICES.md). A licença de distribuição do código e conteúdo próprio deste projeto ainda será definida pelo autor.
+
+## Atlas 0.5
+
+A tela inicial agora apresenta as 12 regiões em visão de topo. Roda aproxima, arrasto move, clique seleciona. Alterne as camadas para ver territórios, caminhos ou reservas conhecidas. Voltar ao conselho abre as decisões do protótipo; as nove regiões adicionais ainda não têm economia simulada. Detalhes e fontes em [docs/AZGAAR.md](docs/AZGAAR.md).

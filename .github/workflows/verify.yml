@@ -17,7 +17,7 @@ jobs:
         with:
           node-version: '24'
       - name: Testar importação geográfica
-        run: node --test tests/test_azgaar.mjs
+        run: node --test tests/test_azgaar.mjs tests/test_azgaar_real.mjs
       - name: Baixar Godot oficial
         run: |
           curl --fail --location --retry 3 -o /tmp/godot.zip https://github.com/godotengine/godot/releases/download/4.7.2-stable/Godot_v4.7.2-stable_linux.x86_64.zip
@@ -35,6 +35,8 @@ jobs:
         run: /tmp/godot/Godot_v4.7.2-stable_linux.x86_64 --headless --path . --script tests/test_updater.gd
       - name: Testar mapa, seleção e integração com a partida
         run: /tmp/godot/Godot_v4.7.2-stable_linux.x86_64 --headless --path . --script tests/test_map.gd
+      - name: Testar atlas real e navegação
+        run: /tmp/godot/Godot_v4.7.2-stable_linux.x86_64 --headless --path . --script tests/test_atlas.gd
   windows-updater:
     runs-on: windows-latest
     steps:
