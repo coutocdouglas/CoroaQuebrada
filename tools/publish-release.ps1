@@ -15,7 +15,7 @@ $passwordLine = $credentialLines | Where-Object { $_.StartsWith('password=') } |
 if (-not $passwordLine) { throw 'Credencial não encontrada.' }
 $headers = @{ Authorization = ('Bearer ' + $passwordLine.Substring(9)); Accept = 'application/vnd.github+json' }
 $body = Get-Content -LiteralPath "docs/releases/v$Version.md" -Raw -Encoding utf8
-$payload = @{ tag_name = "v$Version"; target_commitish = $sha; name = "v$Version — Coroa Quebrada"; draft = $true; prerelease = $true; body = $body } | ConvertTo-Json
+$payload = @{ tag_name = "v$Version"; target_commitish = $sha; name = "v$Version — Coroa Quebrada"; draft = $true; prerelease = $true; body = $body.ToString() } | ConvertTo-Json
 $release = Invoke-RestMethod -Method Post -Uri "$api/releases" -Headers $headers -ContentType 'application/json; charset=utf-8' -Body ([Text.Encoding]::UTF8.GetBytes($payload))
 $upload = $release.upload_url -replace '\{.*$', ''
 foreach ($name in @("CoroaQuebrada-v$Version-Windows.zip", "CoroaQuebrada-Setup-$Version.exe", 'SHA256SUMS.txt')) {
